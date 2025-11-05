@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>STACK — Quick Revision Notes (Bangla + English)</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f1724; /* dark slate */
+        --card: #111827;
+        --muted: #9ca3af;
+        --accent: #60a5fa; /* sky-400 */
+        --glass: rgba(255, 255, 255, 0.03);
+        --glass-2: rgba(255, 255, 255, 0.02);
+        --radius: 14px;
+        color-scheme: dark;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: black;
+        color: #e6eef8;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 28px;
+        padding: 28px;
+        max-width: 1200px;
+        margin: 28px auto;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(8px);
+        padding: 20px;
+        border-radius: 16px;
+        height: calc(100vh - 96px);
+        position: sticky;
+        top: 28px;
+        overflow: auto;
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--accent), #7c3aed);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        color: #021024;
+      }
+      .brand h1 {
+        font-size: 16px;
+        margin: 0;
+      }
+      .brand p {
+        margin: 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .nav {
+        margin-top: 18px;
+      }
+      .nav button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        width: 100%;
+        border-radius: 10px;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        text-align: left;
+      }
+      .nav button:hover {
+        background: var(--glass);
+        color: var(--accent);
+      }
+      .nav .active {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* MAIN */
+      .main {
+        padding: 20px;
+        border-radius: 16px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        min-height: 80vh;
+      }
+      header.doc-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .doc-title {
+        display: flex;
+        flex-direction: column;
+      }
+      .doc-title h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .doc-title p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .btn {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 0;
+        background: linear-gradient(90deg, var(--accent), #7c3aed);
+        color: #021024;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn.ghost {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .content {
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .article {
+        padding: 18px;
+        background: rgb(22, 22, 22);
+        border-radius: 12px;
+      }
+      .article h3 {
+        margin-top: 6px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      /* code panel */
+      .code-panel {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+      .code-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          rgba(255, 255, 255, 0.02)
+        );
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      }
+      .code-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .small-btn {
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 0;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .small-btn:hover {
+        color: var(--accent);
+      }
+      pre {
+        margin: 0;
+        padding: 16px;
+        overflow: auto;
+        max-height: 600px;
+        background: linear-gradient(180deg, #031025, #051225);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+          "Courier New", monospace;
+        font-size: 13px;
+        border-radius: 0;
+        color: #dbeafe;
+      }
+      code {
+        white-space: pre-wrap;
+      }
+
+      /* right column */
+      .toc {
+        padding: 16px;
+        border-radius: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          rgba(255, 255, 255, 0.02)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.02);
+      }
+      .toc h4 {
+        margin: 0 0 10px 0;
+      }
+      .toc a {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 8px;
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .toc a:hover {
+        color: var(--accent);
+        background: var(--glass);
+      }
+
+      .toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: rgba(3, 7, 18, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        color: #e6eef8;
+        box-shadow: 0 6px 22px rgba(2, 6, 23, 0.6);
+        display: none;
+      }
+      #overview {
+    background: black;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+      /* responsive */
+      @media (max-width: 900px) {
+        .app {
+          grid-template-columns: 1fr;
+          padding: 16px;
+        }
+        .sidebar {
+          position: relative;
+          height: auto;
+          order: 2;
+        }
+        .content {
+          grid-template-columns: 1fr;
+        }
+        .main {
+          margin-top: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" aria-label="Documentation navigation">
+        <div class="brand">
+          <div class="logo">SD</div>
+          <div>
+            <h1>STACK Notes</h1>
+            <p class="muted">Quick revision — Bangla + English</p>
+          </div>
+        </div>
+
+        <div class="nav" role="navigation">
+          <button class="active" data-section="overview">Overview</button>
+          <button data-section="operations">Core Operations</button>
+          <button data-section="implementation">Implementation</button>
+          <button data-section="usecases">Real-life Use Cases</button>
+          <button data-section="complexity">Complexity</button>
+          <button data-section="code">Code (JS)</button>
+        </div>
+
+        <hr
+          style="
+            border: none;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.02);
+            margin: 14px 0;
+          "
+        />
+        <p class="muted" style="font-size: 13px">Pro tips</p>
+        <ul class="muted" style="padding-left: 18px">
+          <li>Use array for simple stacks</li>
+          <li>Use linked list for fixed memory constraints</li>
+          <li>Watch for underflow/overflow</li>
+        </ul>
+      </aside>
+
+      <main class="main">
+        <header class="doc-header">
+          <div class="doc-title">
+            <h2>STACK — Quick Revision Notes</h2>
+            <p class="muted">
+              A compact, modern documentation page for the stack data structure
+              (Bangla + English)
+            </p>
+          </div>
+
+          <div class="controls">
+            <button class="btn" id="downloadBtn">Download HTML</button>
+            <button class="btn ghost" id="themeToggle">Toggle Theme</button>
+          </div>
+        </header>
+
+        <div class="content">
+          <section class="article" id="article">
+            <div id="overview">
+              <h3 id="">What is Stack?</h3>
+              <p class="muted">
+                Stack হলো এমন একটি linear data structure যেখানে LIFO (Last In,
+                First Out) principle কাজ করে।<br />👉 Example: বইয়ের স্ট্যাক —
+                সবচেয়ে উপরে রাখা বইটা আগে উঠবে।
+              </p>
+
+              <h3 id="operations">Core Operations (সব O(1))</h3>
+              <ul>
+                <li><strong>push(x)</strong> → top-এ element add করে</li>
+                <li>
+                  <strong>pop()</strong> → top element remove করে return করে
+                </li>
+                <li>
+                  <strong>peek()</strong> → top element শুধু দেখে, remove করে না
+                </li>
+                <li><strong>isEmpty()</strong> → stack ফাঁকা কি না চেক করে</li>
+                <li><strong>size()</strong> → কত elements আছে জানায়</li>
+              </ul>
+            </div>
+
+            <div id="implementation">
+                  <h3>JavaScript Implementation</h3>
+            <p class="muted">
+              Simple, beginner-friendly implementation using JS Array (dynamic):
+            </p>
+
+            <div class="code-panel" id="codePanel">
+              <div class="code-toolbar">
+                <div class="muted">stack.js</div>
+                <div class="code-actions">
+                  <button class="small-btn" id="copyCode">Copy Code</button>
+                  <button class="small-btn" id="copyAll">
+                    Copy Full Notes
+                  </button>
+                </div>
+              </div>
+              <pre id="codeBlock"><code>// Implementation (JavaScript Version)
+class Stack {
+  constructor() {
+    this.items = []; // JS array works as dynamic stack
+  }
+
+  // ➕ Add element (push)
+  push(element) {
+    this.items.push(element);
+  }
+
+  // ➖ Remove element (pop)
+  pop() {
+    if (this.isEmpty()) throw new Error("Stack Underflow ❌");
+    return this.items.pop();
+  }
+
+  // 👀 See top element
+  peek() {
+    if (this.isEmpty()) throw new Error("Stack is empty!");
+    return this.items[this.items.length - 1];
+  }
+
+  // 🕳️ Check empty or not
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  // 🔢 Total size
+  size() {
+    return this.items.length;
+  }
+
+  // 🧹 Optional → Clear stack
+  clear() {
+    this.items = [];
+  }
+}
+
+// 🔍 Usage Example
+const s = new Stack();
+s.push(10);
+s.push(20);
+console.log("Peek:", s.peek()); // 20
+console.log("Pop:", s.pop());   // 20
+console.log("Empty?", s.isEmpty()); // false
+console.log("Size:", s.size()); // 1</code></pre>
+            </div>
+          
+         
+
+            <h3 id="usecases">Real-life Use Cases</h3>
+            <ul>
+              <li>Function Call Stack → recursion, return addresses</li>
+              <li>Undo/Redo → last change before first</li>
+              <li>Browser History → back to last page</li>
+              <li>Parenthesis Matching → parsing algorithms</li>
+              <li>DFS / Backtracking → explore & return</li>
+            </ul>
+
+            <h3 id="complexity">Complexity Summary</h3>
+            <p class="muted">
+              Time: push/pop/peek/isEmpty/size — O(1). Space: O(n).
+            </p>
+
+            <hr
+              style="
+                border: none;
+                height: 1px;
+                background: rgba(255, 255, 255, 0.02);
+                margin: 16px 0;
+              "
+            />
+            <p class="muted">
+              This page is generated as a modern single-file documentation. Use
+              the right panel to jump between sections and the copy buttons to
+              copy code quickly.
+            </p>
+          </section>
+
+          <aside class="toc">
+            <h4>Table of contents</h4>
+            <a href="#overview">What is Stack?</a>
+            <a href="#operations">Core Operations</a>
+            <a href="#implementation">Implementation</a>
+            <a href="#usecases">Real-life Use Cases</a>
+            <a href="#complexity">Complexity Summary</a>
+            <hr
+              style="
+                border: none;
+                height: 1px;
+                background: rgba(255, 255, 255, 0.02);
+                margin: 8px 0;
+              "
+            />
+            <h4>Full Notes</h4>
+            <p class="muted" style="font-size: 13px">
+              The full markdown-style notes are available for quick copy.
+            </p>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast">Copied to clipboard ✓</div>
+
+    <script>
+      // Simple UI interactions: copy code, copy full notes, theme toggle, download page
+      const copyCodeBtn = document.getElementById("copyCode");
+      const copyAllBtn = document.getElementById("copyAll");
+      const codeBlock = document.getElementById("codeBlock").innerText;
+      const toast = document.getElementById("toast");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const themeToggle = document.getElementById("themeToggle");
+
+      function showToast(msg = "Copied to clipboard ✓") {
+        toast.innerText = msg;
+        toast.style.display = "block";
+        setTimeout(() => (toast.style.display = "none"), 1600);
+      }
+
+      copyCodeBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(codeBlock);
+          showToast("Code copied to clipboard ✓");
+        } catch (e) {
+          showToast("Copy failed — select and press Ctrl+C");
+        }
+      });
+
+      // Full notes (markdown-like) copied from the article content (generated here)
+      const fullNotes = `───────────────────────────────\n🔹 What is Stack?\n───────────────────────────────\nStack হলো এমন একটি linear data structure যেখানে LIFO (Last In, First Out) principle কাজ করে।\n👉 Example: বইয়ের স্ট্যাক — সবচেয়ে উপরে রাখা বইটা আগে উঠবে।\n\n───────────────────────────────\n💡 Why Use Stack?\n───────────────────────────────\n✔ Function call management (Call stack)\n✔ Undo / Redo operations\n✔ Expression parsing (Bracket matching, Infix → Postfix)\n✔ DFS & Backtracking\n✔ Browser history navigation\n\n───────────────────────────────\n⚙️ Core Operations (সব O(1))\n───────────────────────────────\n1️⃣ push(x) → top-এ element add করে\n2️⃣ pop() → top element remove করে return করে\n3️⃣ peek() → top element শুধু দেখে, remove করে না\n4️⃣ isEmpty() → stack ফাঁকা কি না চেক করে\n5️⃣ size() → কত elements আছে জানায়\n\n🧩 Rules:\n👉 LIFO — Last In First Out\n👉 Overflow → full stack এ push করা\n👉 Underflow → empty stack থেকে pop করা\n\n───────────────────────────────\n🧾 Key Terms\n───────────────────────────────\n🔸 Top → সর্বশেষ যোগ করা element\n🔸 Capacity → stack এর সর্বোচ্চ আকার (যদি fixed হয়)\n🔸 Overflow / Underflow → invalid push/pop operation\n🔸 Amortized cost → dynamic array resize cost average O(1)\n\n───────────────────────────────\n💻 Implementation (JavaScript Version)\n───────────────────────────────\nclass Stack {\n  constructor() {\n    this.items = []; // JS array works as dynamic stack\n  }\n\n  // ➕ Add element (push)\n  push(element) {\n    this.items.push(element);\n  }\n\n  // ➖ Remove element (pop)\n  pop() {\n    if (this.isEmpty()) throw new Error("Stack Underflow ❌");\n    return this.items.pop();\n  }\n\n  // 👀 See top element\n  peek() {\n    if (this.isEmpty()) throw new Error("Stack is empty!");\n    return this.items[this.items.length - 1];\n  }\n\n  // 🕳️ Check empty or not\n  isEmpty() {\n    return this.items.length === 0;\n  }\n\n  // 🔢 Total size\n  size() {\n    return this.items.length;\n  }\n\n  // 🧹 Optional → Clear stack\n  clear() {\n    this.items = [];\n  }\n}\n\n// 🔍 Usage Example\nconst s = new Stack();\ns.push(10);\ns.push(20);\nconsole.log("Peek:", s.peek()); // 20\nconsole.log("Pop:", s.pop());   // 20\nconsole.log("Empty?", s.isEmpty()); // false\nconsole.log("Size:", s.size()); // 1\n`;
+
+      copyAllBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(fullNotes);
+          showToast("Full notes copied ✓");
+        } catch (e) {
+          showToast("Copy failed — select and press Ctrl+C");
+        }
+      });
+
+      // Download full page as HTML
+      downloadBtn.addEventListener("click", () => {
+        const doctype = "<!doctype html>";
+        const html = document.documentElement.outerHTML;
+        const blob = new Blob([doctype + "\n" + html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "stack-documentation.html";
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Section navigation from sidebar
+      document.querySelectorAll(".nav button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".nav button")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const sec = document.getElementById(btn.dataset.section);
+          if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      // smooth anchor links
+      document.querySelectorAll(".toc a").forEach((a) => {
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          const id = a.getAttribute("href").slice(1);
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      // theme toggle (simple inversion)
+      themeToggle.addEventListener("click", () => {
+        const root = document.documentElement;
+        if (root.style.getPropertyValue("--bg") === "#0f1724") {
+          root.style.setProperty("--bg", "#f7fafc");
+          root.style.setProperty("--card", "#ffffff");
+          root.style.setProperty("--muted", "#334155");
+          root.style.setProperty("--accent", "#2563eb");
+          root.style.setProperty("color-scheme", "light");
+          document.body.style.color = "#071329";
+        } else {
+          root.style.setProperty("--bg", "#0f1724");
+          root.style.setProperty("--card", "#111827");
+          root.style.setProperty("--muted", "#9ca3af");
+          root.style.setProperty("--accent", "#60a5fa");
+          root.style.setProperty("color-scheme", "dark");
+          document.body.style.color = "#e6eef8";
+        }
+      });
+    </script>
+  </body>
+</html>
